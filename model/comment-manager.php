@@ -1,6 +1,6 @@
 <?php
 
-define('TABLE', 'article');
+define('TABLE_COMMENT', 'comment');
 
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=mvc-blog', 'root', '', [
@@ -14,7 +14,7 @@ function getAll()
 {
     $pdo = $GLOBALS['pdo'];
 
-    $sql = "SELECT * FROM " . TABLE;
+    $sql = "SELECT * FROM " . TABLE_COMMENT;
     $query = $pdo->query($sql);
     return $query->fetchAll();
 }
@@ -23,23 +23,11 @@ function getById(int $id)
 {
     $pdo = $GLOBALS['pdo'];
 
-    $sql = "SELECT * FROM " . TABLE . " WHERE id = :id";
+    $sql = "SELECT * FROM " . TABLE_COMMENT . " WHERE id = :id";
     $query = $pdo->prepare($sql);
     $query->execute([
         'id' => $id
     ]);
 
     return $query->fetch();
-}
-
-
-function comment()
-{
-    if (!empty($_GET['id'])) {
-        $comment = getById($_GET['id']);
-        include '../view/blog/comment.html.php';
-    } else {
-        header('Location: /');
-        exit;
-    }
 }
